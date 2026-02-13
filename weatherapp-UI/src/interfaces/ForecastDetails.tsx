@@ -24,4 +24,7 @@ export interface ForecastDetails {
       }[];
     }[];
   };
+  error:{
+    message:string;
+  }
 }

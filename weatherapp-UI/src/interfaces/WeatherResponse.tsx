@@ -1,3 +1,4 @@
+
 export interface WeatherResponse {
   location: {
     name: string;
@@ -19,4 +20,7 @@ export interface WeatherResponse {
     humidity: number;
     cloud: number;
   };
+  error:{
+    message:string;
+  }
 }

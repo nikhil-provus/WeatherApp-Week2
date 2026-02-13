@@ -334,7 +334,7 @@ import "./App.css";
 function App() {
   const {
     selectedDomain, setSelectedDomain, answer, city, setCity,
-    days, setDays, currentMode, setCurrentMode, date, setDate, fetchData,cities,setCities,input,setInput
+    days, setDays, currentMode, setCurrentMode, date, setDate, fetchData,setCities,input,setInput
   } = useWeather();
 
   const domains = ["current", "forecast", "future","multipleLocations"];
@@ -369,7 +369,10 @@ function App() {
                   type="radio"
                   value="gps"
                   checked={currentMode === "gps"}
-                  onChange={() => setCurrentMode("gps")}
+                  onChange={(e) => {
+                    setCurrentMode("gps");
+                    setCity(e.target.value);
+                  }}
                 />
                 Use GPS
               </label>
@@ -378,7 +381,10 @@ function App() {
                   type="radio"
                   value="city"
                   checked={currentMode === "city"}
-                  onChange={() => setCurrentMode("city")}
+                  onChange={(e) => {
+                    setCurrentMode("city");
+                    setCity(e.target.value);
+                  }}
                 />
                 Choose City
               </label>
@@ -387,7 +393,7 @@ function App() {
             {currentMode === "city" && (
               <div>
                 <label>Enter city name</label>
-                <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+                <input required type="text" value={city} onChange={(e) => setCity(e.target.value)} />
               </div>
             )}
           </div>
@@ -397,7 +403,7 @@ function App() {
           <div className="forecast-options">
              <div>
                 <label>Enter city name</label>
-                <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+                <input required type="text" value={city} onChange={(e) => setCity(e.target.value)} />
               </div>
 
             <div style={{ marginTop: 10 }}>
@@ -406,7 +412,7 @@ function App() {
                 type="number" 
                 value={days} 
                 min={1} 
-                max={10} 
+                max={6} 
                 onChange={(e) => setDays(Number(e.target.value))} 
               />
             </div>
@@ -416,6 +422,7 @@ function App() {
         {selectedDomain==="multipleLocations" &&(
           <div>
             <input
+              required
               type="text"
               placeholder="Enter cities separated by commas"
               value={input}
@@ -428,7 +435,7 @@ function App() {
           <div className="future-options">
              <div>
                 <label>Enter city name</label>
-                <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+                <input required type="text" value={city} onChange={(e) => setCity(e.target.value)} />
               </div>
             <div style={{ marginTop: 10 }}>
               <label>Pick Date: </label>

@@ -5,7 +5,11 @@ const BASE_URL = "https://api.weatherapi.com/v1";
 
 export const getCurrentWeather = async (query: string): Promise<WeatherResponse> => {
   const res = await fetch(`${BASE_URL}/current.json?key=${API_KEY}&q=${query}`);
-  return res.json();
+  const ans:WeatherResponse= await res.json();
+  if(ans.error){
+    alert(ans.error.message);
+  }
+  return ans;
 };
 
 export const getMultipleLocations=async (queries:string[]):Promise<WeatherResponse[]>=>{
@@ -20,10 +24,18 @@ export const getMultipleLocations=async (queries:string[]):Promise<WeatherRespon
 
 export const getForecastWeather = async (query: string, days: number): Promise<ForecastDetails> => {
   const res = await fetch(`${BASE_URL}/forecast.json?key=${API_KEY}&q=${query}&days=${days}`);
-  return res.json();
+  const ans :ForecastDetails=await res.json();
+  if(ans.error){
+    alert(ans.error.message);
+  }
+  return ans;
 };
 
 export const getFutureWeather = async (query: string, date: string): Promise<ForecastDetails> => {
   const res = await fetch(`${BASE_URL}/future.json?key=${API_KEY}&q=${query}&dt=${date}`);
-  return res.json();
+  const ans :ForecastDetails=await res.json();
+  if(ans.error){
+    alert(ans.error.message);
+  }
+  return ans;
 };

@@ -10,6 +10,7 @@ interface Props {
 }
 
 export const WeatherCard: React.FC<Props> = ({ data, type }) => {
+
   if (type === "current" && "current" in data) {
     return (
       <div className="weather-card">
@@ -18,7 +19,6 @@ export const WeatherCard: React.FC<Props> = ({ data, type }) => {
               <div className="main-info">
                 <img 
                   src={data.current.condition.icon} 
-                  alt={data.current.condition.text} 
                   className="weather-icon"
                 />
                 <h1>{data.current.temp_c}°C</h1>
