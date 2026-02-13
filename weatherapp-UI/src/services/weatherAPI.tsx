@@ -1,6 +1,7 @@
 import type { WeatherResponse } from "../interfaces/WeatherResponse";
 import type { ForecastDetails } from "../interfaces/ForecastDetails";
-const API_KEY = "446a1e1a882d44c9b2951825260502";
+
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const BASE_URL = "https://api.weatherapi.com/v1";
 
 export const getCurrentWeather = async (query: string): Promise<WeatherResponse> => {
