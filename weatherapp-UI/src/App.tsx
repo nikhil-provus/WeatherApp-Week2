@@ -328,15 +328,16 @@
 import { useWeather } from "./hooks/useWeather";
 import { WeatherCard } from "./components/WeatherCard";
 import { ForeCastCharts } from "./components/ForeCastCharts";
+
 import "./App.css";
 
 function App() {
   const {
     selectedDomain, setSelectedDomain, answer, city, setCity,
-    days, setDays, currentMode, setCurrentMode, date, setDate, fetchData
+    days, setDays, currentMode, setCurrentMode, date, setDate, fetchData,cities,setCities,input,setInput
   } = useWeather();
 
-  const domains = ["current", "forecast", "future"];
+  const domains = ["current", "forecast", "future","multipleLocations"];
 
   return (
     <div className="App">
@@ -412,6 +413,17 @@ function App() {
           </div>
         )}
 
+        {selectedDomain==="multipleLocations" &&(
+          <div>
+            <input
+              type="text"
+              placeholder="Enter cities separated by commas"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+        )}
+
         {selectedDomain === "future" && (
           <div className="future-options">
              <div>
@@ -428,7 +440,15 @@ function App() {
       </div>
 
       <div style={{ marginTop: 25 }}>
-        <button className="fetch-btn" onClick={fetchData}>
+        <button
+          className="fetch-btn"
+          onClick={() => {
+            if (selectedDomain === "multipleLocations") {
+              const cityArray = input.split(",").map((c:string) => c.trim());
+              setCities(cityArray);
+            }
+            fetchData();
+          }}>
           Get {selectedDomain.charAt(0).toUpperCase() + selectedDomain.slice(1)} Weather
         </button>
       </div>
@@ -436,7 +456,17 @@ function App() {
       {answer && selectedDomain === "current" && "current" in answer && <WeatherCard data={answer} type="current" />}
       {answer && selectedDomain === "future" && "forecast" in answer && <WeatherCard data={answer} type="future" />}
       {answer && selectedDomain === "forecast" && "forecast" in answer && (
-        <ForeCastCharts city={answer.location.name} temp={answer.forecast.forecastday[0].day.avgtemp_c} condition={answer.forecast.forecastday[0].day.condition.text} forecast={answer.forecast.forecastday} />
+        <ForeCastCharts city={answer?.location?.name} 
+                        temp={answer?.forecast?.forecastday[0]?.day?.avgtemp_c} 
+                        condition={answer?.forecast?.forecastday[0]?.day?.condition?.text} 
+                        forecast={answer?.forecast?.forecastday} />
+      )}
+      {answer && selectedDomain === "multipleLocations" && Array.isArray(answer) && (
+        <div className="multiple-cities">
+          {answer.map((cityWeather) => (
+            <WeatherCard key={cityWeather.location.name} data={cityWeather} type="current" />
+          ))}
+        </div>
       )}
       </div>
   );

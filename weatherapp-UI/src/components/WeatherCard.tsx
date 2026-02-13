@@ -39,7 +39,7 @@ export const WeatherCard: React.FC<Props> = ({ data, type }) => {
                 <p>{data.current.pressure_mb} mb</p>
               </div>
             </div>
-          </div>
+      </div>
     );
   }
 
@@ -63,7 +63,5 @@ export const WeatherCard: React.FC<Props> = ({ data, type }) => {
         forecast={data.forecast.forecastday}
       />
     );
-
-  return null;
    }
 };

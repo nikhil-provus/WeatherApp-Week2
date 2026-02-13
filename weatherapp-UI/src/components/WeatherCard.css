@@ -13,6 +13,11 @@
   overflow: hidden;
 }
 
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .top h2 {
   font-size: 22px;
   margin: 0;

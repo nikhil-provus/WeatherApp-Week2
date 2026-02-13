@@ -1,20 +1,29 @@
 import { useState, useEffect } from "react";
 import type{ WeatherResponse } from "../interfaces/WeatherResponse";
 import type{ ForecastDetails } from "../interfaces/ForecastDetails";
-import { getCurrentWeather, getForecastWeather, getFutureWeather } from "../services/weatherAPI";
+import { getCurrentWeather, getForecastWeather, getFutureWeather ,getMultipleLocations } from "../services/weatherAPI";
 import { reverseGeocode } from "../services/geocodeAPI";
 
-export type Domain = "current" | "forecast" | "future";
+export type Domain = "current" | "forecast" | "future" |"multipleLocations";
 export type Mode = "city" | "gps";
 
 export const useWeather = () => {
   const [selectedDomain, setSelectedDomain] = useState<Domain>("current");
-  const [answer, setAnswer] = useState<WeatherResponse | ForecastDetails | null>(null);
+  const [answer, setAnswer] = useState<WeatherResponse | ForecastDetails| WeatherResponse[] | null>(null);
   const [city, setCity] = useState<string>("");
   const [days, setDays] = useState<number>(1);
   const [currentMode, setCurrentMode] = useState<Mode>("gps");
   const [date, setDate] = useState<string>("");
-  useEffect(() => setAnswer(null), [selectedDomain, city]);
+    const [input, setInput] = useState<string>("");
+
+
+  const [cities,setCities]=useState<string[]>([]);
+
+  useEffect(() => {
+    setAnswer(null);
+    // if (selectedDomain !== "multipleLocations") setInput("");
+  },[selectedDomain, city],
+  );
 
   const fetchCurrentByGPS = async () => {
     if (!navigator.geolocation) return alert("Geolocation not supported");
@@ -45,11 +54,16 @@ export const useWeather = () => {
         case "future":
           setAnswer(await getFutureWeather(city, date));
           break;
+        case "multipleLocations":
+          setAnswer(await getMultipleLocations(cities) );
+          break;
+        default:
+          break;
       }
     } catch (error) {
       console.log("Error fetching weather:", error);
     }
   };
 
-  return { selectedDomain, setSelectedDomain, answer, city, setCity, days, setDays, currentMode, setCurrentMode, date, setDate, fetchData };
+  return { selectedDomain, setSelectedDomain, answer, city, setCity, days, setDays, currentMode, setCurrentMode, date, setDate, fetchData,cities,setCities ,input,setInput};
 };

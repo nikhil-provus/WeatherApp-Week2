@@ -8,6 +8,16 @@ export const getCurrentWeather = async (query: string): Promise<WeatherResponse>
   return res.json();
 };
 
+export const getMultipleLocations=async (queries:string[]):Promise<WeatherResponse[]>=>{
+  const data = queries.map((query:string) =>
+    fetch(`${BASE_URL}/current.json?key=${API_KEY}&q=${query}`).then((res) =>
+      res.json() as Promise<WeatherResponse>
+    )
+  );
+  const results = await Promise.all(data);
+  return results;
+}
+
 export const getForecastWeather = async (query: string, days: number): Promise<ForecastDetails> => {
   const res = await fetch(`${BASE_URL}/forecast.json?key=${API_KEY}&q=${query}&days=${days}`);
   return res.json();
