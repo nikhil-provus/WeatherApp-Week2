@@ -47,6 +47,11 @@ export const WeatherCard: React.FC<Props> = ({ data, type }) => {
     return (
       <div className="weather-card">
             <p>
+              <img 
+                  src={data.forecast.forecastday[0].day.condition.icon} 
+                  className="weather-icon"
+                />
+                <br />
               <strong>Date:</strong> {data.forecast.forecastday[0].date}<br/>
               <strong>Temp:</strong> {data.forecast.forecastday[0].day.avgtemp_c}°C<br/>
               <strong>Sky:</strong> {data.forecast.forecastday[0].day.condition.text}

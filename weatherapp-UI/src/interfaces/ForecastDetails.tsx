@@ -12,6 +12,7 @@ export interface ForecastDetails {
         mintemp_c: number;
         condition: {
           text: string;
+          icon:string;
         };
       };
       hour: {
